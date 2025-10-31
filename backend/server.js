@@ -1,4 +1,4 @@
-// redeploy cors fix timestamp
+// redeploy cors fix timestamp22
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,49 +13,42 @@ import resumenRouter from "./routes/resumenRoutes.js";
 const app = express();
 
 /**
- * CORS CONFIG
+ * CORS SUPER EXPLÍCITO
  *
  * Permitimos:
- * - tu frontend en producción: https://contable-movida.vercel.app
- * - entornos locales comunes: localhost:3000 y localhost:5173
+ * - https://contable-movida.vercel.app  (frontend prod)
+ * - localhost para desarrollo
  *
- * Importante:
- * - Esto además responde preflight OPTIONS.
- * - Ya no dependemos sólo de FRONTEND_ORIGIN porque necesitamos más de un origen permitido.
+ * Siempre devolvemos Access-Control-Allow-Origin si el origin es válido.
  */
 const allowedOrigins = [
+  "https://contable-movida.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173",
-  "https://contable-movida.vercel.app",
 ];
 
-// middleware CORS personalizado
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Requests internas del servidor (sin origin, por ejemplo llamadas directas desde Vercel) las dejamos pasar
-      if (!origin) {
-        return callback(null, true);
-      }
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+  }
 
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+  // manejar preflight OPTIONS sin pasar a las rutas
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-      // origen no permitido
-      return callback(
-        new Error("CORS bloqueado para este origen: " + origin),
-        false
-      );
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// responder preflight OPTIONS global
-app.options("*", cors());
+  next();
+});
 
 app.use(express.json());
 
@@ -86,28 +79,19 @@ app.use("/api", async (req, res, next) => {
 
 // === Rutas ===
 
-// Endpoint raíz de salud
+// healthcheck
 app.get("/", async (req, res) => {
   await initDb();
   res.json({ ok: true, servicio: "contabilidad-movida-backend" });
 });
 
-// CRUD tareas
 app.use("/api/tareas", tareasRouter);
-
-// CRUD movimientos (ingresos / egresos)
 app.use("/api/movimientos", movimientosRouter);
-
-// Resúmenes financieros (flujo-caja, estado-resultados, kpis)
 app.use("/api/resumen", resumenRouter);
 
-// Manejo básico de errores (incluye errores de CORS y DB)
+// Manejo básico de errores (incluye CORS y DB)
 app.use((err, req, res, next) => {
   console.error("ERROR GLOBAL:", err?.message || err);
-
-  if (err.message && err.message.startsWith("CORS bloqueado")) {
-    return res.status(403).json({ error: "CORS no permitido", detail: err.message });
-  }
 
   return res.status(500).json({
     error: "Error interno del servidor",
