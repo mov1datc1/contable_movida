@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import cors from "cors";
 import mongoose from "mongoose";
 
 import tareasRouter from "./routes/taskRoutes.js";
@@ -21,26 +20,32 @@ const app = express();
  *
  * Siempre devolvemos Access-Control-Allow-Origin si el origin es válido.
  */
-const allowedOrigins = [
-  "https://contable-movida.vercel.app",
-  "http://localhost:3000",
-  "http://localhost:5173",
-];
+const allowedOrigins = new Set(
+  [
+    process.env.FRONTEND_ORIGIN,
+    "https://contable-movida.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+  ].filter(Boolean)
+);
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
+
+  if (origin && allowedOrigins.has(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,POST,PUT,PATCH,DELETE,OPTIONS"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
+
+  res.setHeader("Vary", "Origin");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   // manejar preflight OPTIONS sin pasar a las rutas
   if (req.method === "OPTIONS") {
