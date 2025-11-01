@@ -112,37 +112,21 @@ const EstadoResultadosPage = () => {
               title="Ingresos operativos"
               value={formatCurrency(resumen.ingresosOperativos ?? 0)}
               subtitle="Ventas y servicios del negocio"
-              background="bg-emerald-50"
-              valueColor="text-emerald-600"
-              titleColor="text-emerald-800"
-              subtitleColor="text-emerald-700"
             />
             <Card
               title="Utilidad Bruta"
               value={formatCurrency(resumen.utilidadBruta ?? 0)}
               subtitle="Ingresos menos costo directo"
-              background="bg-blue-50"
-              valueColor="text-blue-600"
-              titleColor="text-blue-800"
-              subtitleColor="text-blue-700"
             />
             <Card
               title="EBITDA"
               value={formatCurrency(resumen.ebitda ?? 0)}
               subtitle="Utilidad antes de depreciación"
-              background="bg-sky-50"
-              valueColor="text-sky-600"
-              titleColor="text-sky-800"
-              subtitleColor="text-sky-700"
             />
             <Card
               title="Utilidad / pérdida neta"
               value={formatCurrency(resumen.utilidadNeta ?? 0)}
               subtitle={(resumen.utilidadNeta ?? 0) >= 0 ? 'Resultado positivo' : 'Resultado negativo'}
-              background={(resumen.utilidadNeta ?? 0) >= 0 ? 'bg-amber-50' : 'bg-rose-50'}
-              valueColor={(resumen.utilidadNeta ?? 0) >= 0 ? 'text-amber-600' : 'text-rose-600'}
-              titleColor={(resumen.utilidadNeta ?? 0) >= 0 ? 'text-amber-800' : 'text-rose-800'}
-              subtitleColor={(resumen.utilidadNeta ?? 0) >= 0 ? 'text-amber-700' : 'text-rose-700'}
             />
           </div>
 
