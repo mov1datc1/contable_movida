@@ -93,16 +93,28 @@ const FlujoCajaPage = () => {
               title="Ingresos del período"
               value={formatCurrency(resumen.totalIngresosPeriodo)}
               subtitle="Incluye todas las entradas registradas"
+              background="bg-gradient-to-br from-emerald-500 via-emerald-400 to-emerald-600"
+              titleColor="text-emerald-100"
+              subtitleColor="text-emerald-50/90"
+              borderColor="border-emerald-300/40"
             />
             <Card
               title="Egresos del período"
               value={formatCurrency(resumen.totalEgresosPeriodo)}
               subtitle="Suma de gastos operativos y no operativos"
+              background="bg-gradient-to-br from-rose-500 via-rose-400 to-rose-600"
+              titleColor="text-rose-100"
+              subtitleColor="text-rose-50/90"
+              borderColor="border-rose-300/40"
             />
             <Card
               title="Balance del período"
               value={formatCurrency(resumen.balancePeriodo)}
               subtitle="Ingresos - Egresos"
+              background="bg-gradient-to-br from-sky-500 via-sky-400 to-blue-600"
+              titleColor="text-sky-100"
+              subtitleColor="text-sky-50/90"
+              borderColor="border-sky-300/40"
             />
             <Card
               title="Variación vs mes anterior"
@@ -118,6 +130,10 @@ const FlujoCajaPage = () => {
                     )}`
                   : 'Agrega más historial para comparar'
               }
+              background="bg-gradient-to-br from-fuchsia-500 via-purple-500 to-amber-500"
+              titleColor="text-fuchsia-100"
+              subtitleColor="text-fuchsia-50/90"
+              borderColor="border-fuchsia-300/40"
             />
           </div>
 
