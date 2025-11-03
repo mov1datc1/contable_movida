@@ -96,16 +96,28 @@ const KPIsPage = () => {
               title="Margen"
               value={`${(data.margen * 100).toFixed(1)}%`}
               subtitle="(Ingresos - Egresos) / Ingresos"
+              background="bg-gradient-to-br from-teal-500 via-emerald-400 to-teal-600"
+              titleColor="text-teal-100"
+              subtitleColor="text-teal-50/90"
+              borderColor="border-teal-300/40"
             />
             <Card
               title="Balance acumulado"
               value={formatCurrency(data.balance)}
               subtitle="Resultado del período filtrado"
+              background="bg-gradient-to-br from-sky-500 via-blue-400 to-indigo-600"
+              titleColor="text-sky-100"
+              subtitleColor="text-sky-50/90"
+              borderColor="border-sky-300/40"
             />
             <Card
               title="Burn rate mensual"
               value={formatCurrency(data.burnRateMensual)}
               subtitle="Promedio de egresos últimos meses"
+              background="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500"
+              titleColor="text-amber-100"
+              subtitleColor="text-amber-50/90"
+              borderColor="border-amber-300/40"
             />
             <Card
               title="Tendencia reciente"
@@ -115,6 +127,10 @@ const KPIsPage = () => {
                   : 'Sin datos'
               }
               subtitle="Balance del mes más reciente"
+              background="bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-600"
+              titleColor="text-fuchsia-100"
+              subtitleColor="text-fuchsia-50/90"
+              borderColor="border-fuchsia-300/40"
             />
           </div>
 

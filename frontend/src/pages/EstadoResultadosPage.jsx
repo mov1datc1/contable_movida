@@ -52,6 +52,11 @@ const EstadoResultadosPage = () => {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
+  const ingresosOperativos = resumen?.ingresosOperativos ?? 0;
+  const utilidadBruta = resumen?.utilidadBruta ?? 0;
+  const ebitda = resumen?.ebitda ?? 0;
+  const utilidadNeta = resumen?.utilidadNeta ?? 0;
+
   const obtenerResumen = async () => {
     setLoading(true);
     try {
@@ -110,23 +115,43 @@ const EstadoResultadosPage = () => {
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Card
               title="Ingresos operativos"
-              value={formatCurrency(resumen.ingresosOperativos ?? 0)}
+              value={formatCurrency(ingresosOperativos)}
               subtitle="Ventas y servicios del negocio"
+              background="bg-gradient-to-br from-emerald-500 via-emerald-400 to-emerald-600"
+              titleColor="text-emerald-100"
+              subtitleColor="text-emerald-50/90"
+              borderColor="border-emerald-300/40"
             />
             <Card
               title="Utilidad Bruta"
-              value={formatCurrency(resumen.utilidadBruta ?? 0)}
+              value={formatCurrency(utilidadBruta)}
               subtitle="Ingresos menos costo directo"
+              background="bg-gradient-to-br from-indigo-500 via-indigo-400 to-indigo-600"
+              titleColor="text-indigo-100"
+              subtitleColor="text-indigo-50/90"
+              borderColor="border-indigo-300/40"
             />
             <Card
               title="EBITDA"
-              value={formatCurrency(resumen.ebitda ?? 0)}
+              value={formatCurrency(ebitda)}
               subtitle="Utilidad antes de depreciación"
+              background="bg-gradient-to-br from-amber-500 via-orange-400 to-yellow-500"
+              titleColor="text-amber-100"
+              subtitleColor="text-amber-50/90"
+              borderColor="border-amber-300/40"
             />
             <Card
               title="Utilidad / pérdida neta"
-              value={formatCurrency(resumen.utilidadNeta ?? 0)}
-              subtitle={(resumen.utilidadNeta ?? 0) >= 0 ? 'Resultado positivo' : 'Resultado negativo'}
+              value={formatCurrency(utilidadNeta)}
+              subtitle={utilidadNeta >= 0 ? 'Resultado positivo' : 'Resultado negativo'}
+              background={
+                utilidadNeta >= 0
+                  ? 'bg-gradient-to-br from-emerald-500 via-lime-500 to-emerald-600'
+                  : 'bg-gradient-to-br from-rose-500 via-rose-400 to-rose-600'
+              }
+              titleColor={utilidadNeta >= 0 ? 'text-emerald-100' : 'text-rose-100'}
+              subtitleColor={utilidadNeta >= 0 ? 'text-emerald-50/90' : 'text-rose-50/90'}
+              borderColor={utilidadNeta >= 0 ? 'border-emerald-300/40' : 'border-rose-300/40'}
             />
           </div>
 
